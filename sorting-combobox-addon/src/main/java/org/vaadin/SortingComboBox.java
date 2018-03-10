@@ -407,7 +407,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
     /**
      * Sets whether it is possible to input text into the field or whether the
      * field area of the component is just used to show what is selected. By
-     * disabling text input, the comboBox will work in the same way as a
+     * disabling text input, theSortingComboBox will work in the same way as a
      *  NativeSelect
      *
      * @see #isTextInputAllowed()
@@ -424,7 +424,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      * Returns true if the user can enter text into the field to either filter
      * the selections or enter a new value if new item handler is set (see
      * {@link #setNewItemHandler(NewItemHandler)}. If text input is disabled,
-     * the comboBox will work in the same way as a  NativeSelect
+     * theSortingComboBox will work in the same way as a  NativeSelect
      *
      * @return true if text input is allowed
      */
@@ -541,7 +541,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      * SortingComboBox itself.
      * <p>
      * By default this width is set to "100%" so that the pop-up's width is
-     * equal to the width of the combobox. By setting width to null the pop-up's
+     * equal to the width of theSortingComboBox. By setting width to null the pop-up's
      * width will automatically expand beyond 100% relative width to fit the
      * content of all displayed items.
      *

@@ -18,7 +18,7 @@ package org.vaadin.client;
 import com.vaadin.shared.communication.ClientRpc;
 
 /**
- * Server to client RPC interface for ComboBox.
+ * Server to client RPC interface forSortingComboBox.
  *
  * @since 8.3.1
  */

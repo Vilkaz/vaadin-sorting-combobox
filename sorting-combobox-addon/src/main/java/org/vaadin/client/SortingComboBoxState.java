@@ -20,7 +20,7 @@ import com.vaadin.shared.annotations.NoLayout;
 import com.vaadin.shared.ui.AbstractSingleSelectState;
 
 /**
- * Shared state for the ComboBox component.
+ * Shared state for theSortingComboBox component.
  *
  * @since 7.0
  */
@@ -32,7 +32,7 @@ public class SortingComboBoxState extends AbstractSingleSelectState {
     }
 
     /**
-     * If text input is not allowed, the ComboBox behaves like a pretty
+     * If text input is not allowed, theSortingComboBox behaves like a pretty
      * NativeSelect - the user can not enter any text and clicking the text
      * field opens the drop down with options.
      *
@@ -56,7 +56,7 @@ public class SortingComboBoxState extends AbstractSingleSelectState {
 
     /**
      * Suggestion pop-up's width as a CSS string. By using relative units (e.g.
-     * "50%") it's possible to set the popup's width relative to the ComboBox
+     * "50%") it's possible to set the popup's width relative to theSortingComboBox
      * itself.
      */
     @DelegateToWidget
@@ -77,7 +77,7 @@ public class SortingComboBoxState extends AbstractSingleSelectState {
     public boolean emptySelectionAllowed = true;
 
     /**
-     * True to automatically scroll the ComboBox to show the selected item,
+     * True to automatically scroll theSortingComboBox to show the selected item,
      * false not to search for it in the results.
      */
     public boolean scrollToSelectedItem = false;

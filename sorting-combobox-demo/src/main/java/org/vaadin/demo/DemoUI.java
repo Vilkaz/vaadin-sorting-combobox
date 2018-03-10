@@ -29,7 +29,7 @@ public class DemoUI extends UI
         // Initialize our new UI component
         final SortingComboBox<String> component = new SortingComboBox<>();
 
-        component.setItems("IT", "HAS", "TO", "FUCKIGN", "WORK", "NOW");
+        component.setItems("IT", "HAS", "TO", "FUCKING", "WORK", "NOW");
 
         // Show it in the middle of the screen
         final VerticalLayout layout = new VerticalLayout();

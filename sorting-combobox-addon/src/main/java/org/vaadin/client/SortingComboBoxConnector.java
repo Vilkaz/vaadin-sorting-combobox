@@ -28,10 +28,6 @@ import com.vaadin.shared.communication.FieldRpc.FocusAndBlurServerRpc;
 import com.vaadin.shared.data.DataCommunicatorConstants;
 import com.vaadin.shared.data.selection.SelectionServerRpc;
 import com.vaadin.shared.ui.Connect;
-import com.vaadin.shared.ui.combobox.ComboBoxClientRpc;
-import com.vaadin.shared.ui.combobox.ComboBoxConstants;
-import com.vaadin.shared.ui.combobox.ComboBoxServerRpc;
-import com.vaadin.shared.ui.combobox.ComboBoxState;
 import elemental.json.JsonObject;
 
 import java.util.List;
@@ -42,7 +38,7 @@ import java.util.logging.Logger;
 public class SortingComboBoxConnector extends AbstractListingConnector
         implements SimpleManagedLayout {
 
-    private ComboBoxServerRpc rpc = getRpcProxy(ComboBoxServerRpc.class);
+    private SortingComboBoxServerRpc rpc = getRpcProxy(SortingComboBoxServerRpc.class);
     private SelectionServerRpc selectionRpc = getRpcProxy(
             SelectionServerRpc.class);
 
@@ -61,7 +57,7 @@ public class SortingComboBoxConnector extends AbstractListingConnector
     protected void init() {
         super.init();
         getWidget().connector = this;
-        registerRpc(ComboBoxClientRpc.class, new ComboBoxClientRpc() {
+        registerRpc(SortingComboBoxClientRpc.class, new SortingComboBoxClientRpc() {
             @Override
             public void newItemNotAdded(String itemValue) {
                 if (itemValue != null && itemValue.equals(pendingNewItemValue)
@@ -110,7 +106,7 @@ public class SortingComboBoxConnector extends AbstractListingConnector
 
     @OnStateChange("emptySelectionCaption")
     private void onEmptySelectionCaptionChange() {
-        List<SortingComboBox.ComboBoxSuggestion> suggestions = getWidget().currentSuggestions;
+        List<SortingComboBox.SortingComboBoxSuggestion> suggestions = getWidget().currentSuggestions;
         if (!suggestions.isEmpty() && isFirstPage()) {
             suggestions.remove(0);
             addEmptySelectionItem();
@@ -136,8 +132,8 @@ public class SortingComboBoxConnector extends AbstractListingConnector
     }
 
     @Override
-    public ComboBoxState getState() {
-        return (ComboBoxState) super.getState();
+    public SortingComboBoxState getState() {
+        return (SortingComboBoxState) super.getState();
     }
 
     @Override
@@ -356,10 +352,10 @@ public class SortingComboBoxConnector extends AbstractListingConnector
             if (row != null) {
                 String key = getRowKey(row);
                 String caption = row.getString(DataCommunicatorConstants.NAME);
-                String style = row.getString(ComboBoxConstants.STYLE);
+                String style = row.getString(SortingComboBoxConstants.STYLE);
                 String untranslatedIconUri = row
-                        .getString(ComboBoxConstants.ICON);
-                SortingComboBox.ComboBoxSuggestion suggestion = getWidget().new ComboBoxSuggestion(
+                        .getString(SortingComboBoxConstants.ICON);
+                SortingComboBox.SortingComboBoxSuggestion suggestion = getWidget().new SortingComboBoxSuggestion(
                         key, caption, style, untranslatedIconUri);
                 getWidget().currentSuggestions.add(suggestion);
             } else {
@@ -376,7 +372,7 @@ public class SortingComboBoxConnector extends AbstractListingConnector
     private void addEmptySelectionItem() {
         if (isFirstPage()) {
             getWidget().currentSuggestions.add(0,
-                    getWidget().new ComboBoxSuggestion("",
+                    getWidget().new SortingComboBoxSuggestion("",
                             getState().emptySelectionCaption, null, null));
         }
     }

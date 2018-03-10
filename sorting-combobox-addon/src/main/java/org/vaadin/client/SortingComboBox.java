@@ -67,7 +67,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
     /**
      * Represents a suggestion in the suggestion popup box.
      */
-    public class ComboBoxSuggestion implements Suggestion, Command {
+    public class SortingComboBoxSuggestion implements Suggestion, Command {
 
         private final String key;
         private final String caption;
@@ -87,7 +87,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
          * @param untranslatedIconUri
          *            icon URI or null
          */
-        public ComboBoxSuggestion(String key, String caption, String style,
+        public SortingComboBoxSuggestion(String key, String caption, String style,
                                   String untranslatedIconUri) {
             this.key = key;
             this.caption = caption;
@@ -173,10 +173,10 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
 
         @Override
         public boolean equals(Object obj) {
-            if (!(obj instanceof ComboBoxSuggestion)) {
+            if (!(obj instanceof SortingComboBoxSuggestion)) {
                 return false;
             }
-            ComboBoxSuggestion other = (ComboBoxSuggestion) obj;
+           SortingComboBoxSuggestion other = (SortingComboBoxSuggestion) obj;
             if (key == null && other.key != null
                     || key != null && !key.equals(other.key)) {
                 return false;
@@ -199,7 +199,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + this.hashCode();
+            result = prime * result + SortingComboBox.this.hashCode();
             result = prime * result + ((key == null) ? 0 : key.hashCode());
             result = prime * result
                     + ((caption == null) ? 0 : caption.hashCode());
@@ -230,7 +230,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
                     deltaY = -0.5*e.wheelDelta;
                 }
 
-                @JsniUtil::moveScrollFromEvent(*)(widget, deltaX, deltaY, e, e.deltaMode);
+                @SortingComboBox.JsniUtil::moveScrollFromEvent(*)(widget, deltaX, deltaY, e, e.deltaMode);
             });
         }-*/;
 
@@ -335,7 +335,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
         SuggestionPopup() {
             super(true, false);
             debug("SortingComboBox.SP: constructor()");
-            setOwner(this);
+            setOwner(SortingComboBox.this);
             menu = new SuggestionMenu();
             setWidget(menu);
 
@@ -435,7 +435,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
 
         private int getDesiredLeftPosition() {
             return toInt32(WidgetUtil
-                    .getBoundingClientRect(this.getElement())
+                    .getBoundingClientRect(SortingComboBox.this.getElement())
                     .getLeft());
         }
 
@@ -456,11 +456,11 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
             if (active) {
                 DOM.sinkEvents(down, Event.ONCLICK);
                 down.setClassName(
-                        this.getStylePrimaryName() + "-nextpage");
+                        SortingComboBox.this.getStylePrimaryName() + "-nextpage");
             } else {
                 DOM.sinkEvents(down, 0);
                 down.setClassName(
-                        this.getStylePrimaryName() + "-nextpage-off");
+                        SortingComboBox.this.getStylePrimaryName() + "-nextpage-off");
             }
         }
 
@@ -477,11 +477,11 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
             if (active) {
                 DOM.sinkEvents(up, Event.ONCLICK);
                 up.setClassName(
-                        this.getStylePrimaryName() + "-prevpage");
+                        SortingComboBox.this.getStylePrimaryName() + "-prevpage");
             } else {
                 DOM.sinkEvents(up, 0);
                 up.setClassName(
-                        this.getStylePrimaryName() + "-prevpage-off");
+                        SortingComboBox.this.getStylePrimaryName() + "-prevpage-off");
             }
         }
 
@@ -547,7 +547,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
             menu.selectItem(newSelectedItem);
 
             // Set the icon.
-            ComboBoxSuggestion suggestion = (ComboBoxSuggestion) newSelectedItem
+           SortingComboBoxSuggestion suggestion = (SortingComboBoxSuggestion) newSelectedItem
                     .getCommand();
             setSelectedItemIcon(suggestion.getIconUri());
 
@@ -559,7 +559,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
          * Using a timer to scroll up or down the pages so when we receive lots
          * of consecutive mouse wheel events the pages does not flicker.
          */
-        private SuggestionPopup.LazyPageScroller lazyPageScroller = new SuggestionPopup.LazyPageScroller();
+        private LazyPageScroller lazyPageScroller = new LazyPageScroller();
 
         private class LazyPageScroller extends Timer {
             private int pagesToScroll = 0;
@@ -647,7 +647,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
 
         @Override
         protected void onPreviewNativeEvent(NativePreviewEvent event) {
-            // Check all events outside the combobox to see if they scroll the
+            // Check all events outside theSortingComboBox to see if they scroll the
             // page. We cannot use e.g. Window.addScrollListener() because the
             // scrolled element can be at any level on the page.
 
@@ -792,7 +792,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
                 getContainerElement().getStyle().setWidth(rootWidth, Unit.PX);
             }
 
-            final int textInputHeight = this.getOffsetHeight();
+            final int textInputHeight = SortingComboBox.this.getOffsetHeight();
             final int textInputTopOnPage = tb.getAbsoluteTop();
             final int viewportOffset = Document.get().getScrollTop();
             final int textInputTopInViewport = textInputTopOnPage
@@ -862,7 +862,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
 
             if (offsetWidth + left > Window.getClientWidth()) {
                 left = this.getAbsoluteLeft()
-                        + this.getOffsetWidth() - offsetWidth;
+                        + SortingComboBox.this.getOffsetWidth() - offsetWidth;
                 if (left < 0) {
                     left = 0;
                     menu.setWidth(Window.getClientWidth() + "px");
@@ -973,11 +973,11 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
         public void updateStyleNames(AbstractComponentState componentState) {
             debug("SortingComboBox.SP: updateStyleNames()");
             setStyleName(
-                    this.getStylePrimaryName() + "-suggestpopup");
+                    SortingComboBox.this.getStylePrimaryName() + "-suggestpopup");
             menu.setStyleName(
-                    this.getStylePrimaryName() + "-suggestmenu");
+                    SortingComboBox.this.getStylePrimaryName() + "-suggestmenu");
             status.setClassName(
-                    this.getStylePrimaryName() + "-status");
+                    SortingComboBox.this.getStylePrimaryName() + "-status");
             if (ComponentStateUtil.hasStyles(componentState)) {
                 for (String style : componentState.styles) {
                     if (!"".equals(style)) {
@@ -1047,14 +1047,14 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
          * @param suggestions
          *            The suggestions to be rendered in the menu
          */
-        public void setSuggestions(Collection<ComboBoxSuggestion> suggestions) {
+        public void setSuggestions(Collection<SortingComboBoxSuggestion> suggestions) {
             if (enableDebug) {
                 debug("SortingComboBox.SM: setSuggestions(" + suggestions + ")");
             }
 
             clearItems();
             boolean isFirstIteration = true;
-            for (final ComboBoxSuggestion suggestion : suggestions) {
+            for (final SortingComboBoxSuggestion suggestion : suggestions) {
                 final MenuItem mi = new MenuItem(suggestion.getDisplayString(),
                         true, suggestion);
                 String style = suggestion.getStyle();
@@ -1309,7 +1309,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
 
     private String getSuggestionKey(MenuItem item) {
         if (item != null && item.getCommand() != null) {
-            return ((ComboBoxSuggestion) item.getCommand()).getOptionKey();
+            return ((SortingComboBoxSuggestion) item.getCommand()).getOptionKey();
         }
         return "";
     }
@@ -1471,7 +1471,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
         }
 
         /*
-         * This method navigates to the proper item in the combobox page. This
+         * This method navigates to the proper item in theSortingComboBox page. This
          * should be executed after setSuggestions() method which is called from
          * SortingComboBox.showSuggestions(). ShowSuggestions() method builds the page
          * content. As far as setSuggestions() method is called as deferred,
@@ -1656,7 +1656,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
      * <p>
      * For internal use only. May be removed or replaced in the future.
      */
-    public final List<ComboBoxSuggestion> currentSuggestions = new ArrayList<>();
+    public final List<SortingComboBoxSuggestion> currentSuggestions = new ArrayList<>();
 
     /** For internal use only. May be removed or replaced in the future. */
     public String serverSelectedKey;
@@ -1676,7 +1676,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
      * <p>
      * For internal use only. May be removed or replaced in the future.
      */
-    public ComboBoxSuggestion currentSuggestion;
+    public SortingComboBoxSuggestion currentSuggestion;
 
     /** For internal use only. May be removed or replaced in the future. */
     public boolean allowNewItems;
@@ -1732,7 +1732,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
         tb = createTextBox();
         suggestionPopup = createSuggestionPopup();
 
-        popupOpener.addMouseDownHandler(this);
+        popupOpener.addMouseDownHandler(SortingComboBox.this);
         Roles.getButtonRole().setAriaHiddenState(popupOpener.getElement(),
                 true);
         Roles.getButtonRole().set(popupOpener.getElement());
@@ -1958,7 +1958,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
      * @param suggestion
      *            The suggestion that just got selected.
      */
-    public void onSuggestionSelected(ComboBoxSuggestion suggestion) {
+    public void onSuggestionSelected(SortingComboBoxSuggestion suggestion) {
         if (enableDebug) {
             debug("SortingComboBox: onSuggestionSelected(" + suggestion.caption + ": "
                     + suggestion.key + ")");
@@ -2034,9 +2034,9 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
         } else {
             selectedItemIcon = new IconWidget(
                     connector.getConnection().getIcon(iconUri));
-            selectedItemIcon.addDomHandler(this,
+            selectedItemIcon.addDomHandler(SortingComboBox.this,
                     ClickEvent.getType());
-            selectedItemIcon.addDomHandler(this,
+            selectedItemIcon.addDomHandler(SortingComboBox.this,
                     MouseDownEvent.getType());
             selectedItemIcon.addDomHandler(
                     event -> afterSelectedItemIconChange(),
@@ -2077,7 +2077,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
             setText(getEmptySelectionCaption());
         }
         // some item selected
-        for (ComboBoxSuggestion suggestion : currentSuggestions) {
+        for (SortingComboBoxSuggestion suggestion : currentSuggestions) {
             String suggestionKey = suggestion.getOptionKey();
             if (!suggestionKey.equals(selectedKey)) {
                 continue;
@@ -2403,7 +2403,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
         // used only to calculate minimum width
         String captions = WidgetUtil.escapeHTML(inputPrompt);
 
-        for (ComboBoxSuggestion suggestion : currentSuggestions) {
+        for (SortingComboBoxSuggestion suggestion : currentSuggestions) {
             // Collect captions so we can calculate minimum width for
             // textarea
             if (!captions.isEmpty()) {
@@ -2608,7 +2608,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
 
                 /*
                  * Instead of setting the width of the wrapper, set the width of
-                 * the combobox. Subtract the width of the icon and the
+                 * theSortingComboBox. Subtract the width of the icon and the
                  * popupopener
                  */
 
