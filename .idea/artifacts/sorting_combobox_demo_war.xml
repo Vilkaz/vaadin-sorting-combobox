@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="sorting-combobox-demo:war">
+    <output-path>$PROJECT_DIR$/sorting-combobox-demo/target</output-path>
+    <root id="archive" name="sorting-combobox-demo-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="sorting-combobox-demo:war exploded" />
+    </root>
+  </artifact>
+</component>
