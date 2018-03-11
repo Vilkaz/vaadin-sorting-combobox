@@ -34,6 +34,7 @@ import com.vaadin.shared.ui.ComponentStateUtil;
 import com.vaadin.shared.util.SharedUtil;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.logging.Logger;
 
 /*
@@ -1726,6 +1727,12 @@ public class SortingComboBox<T> extends Composite implements Field, KeyDownHandl
     private final DataReceivedHandler dataReceivedHandler = new DataReceivedHandler();
 
     /**
+     * It is a List of exact Fits, that will be sorted to the top of the Suggestions.
+     * It is a list, so that you have the possibility to change to sorting order.
+     */
+    private List<BiPredicate<T, String>> exactFits;
+
+    /**
      * Default constructor.
      */
     public SortingComboBox() {
@@ -1753,6 +1760,10 @@ public class SortingComboBox<T> extends Composite implements Field, KeyDownHandl
         setStyleName(CLASSNAME);
 
         sinkEvents(Event.ONPASTE);
+    }
+
+    public void setExactFits(final List<BiPredicate<T, String>> exactFits) {
+        this.exactFits = exactFits;
     }
 
     private static double getMarginBorderPaddingWidth(Element element) {

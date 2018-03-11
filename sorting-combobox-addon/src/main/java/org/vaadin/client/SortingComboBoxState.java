@@ -19,6 +19,10 @@ import com.vaadin.shared.annotations.DelegateToWidget;
 import com.vaadin.shared.annotations.NoLayout;
 import com.vaadin.shared.ui.AbstractSingleSelectState;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiPredicate;
+
 /**
  * Shared state for theSortingComboBox component.
  *
@@ -99,5 +103,8 @@ public class SortingComboBoxState<T> extends AbstractSingleSelectState {
      * @since 8.0
      */
     public String selectedItemIcon;
+
+    @DelegateToWidget
+    public List<BiPredicate<T, String>> exactFits;
 
 }
