@@ -59,7 +59,7 @@ import java.util.logging.Logger;
  *
  * @since 8.0
  */
-public class SortingComboBox extends Composite implements Field, KeyDownHandler,
+public class SortingComboBox<T> extends Composite implements Field, KeyDownHandler,
         KeyUpHandler, ClickHandler, FocusHandler, BlurHandler, Focusable,
         SubPartAware, HandlesAriaCaption, HandlesAriaInvalid,
         HandlesAriaRequired, DeferredWorker, MouseDownHandler {
@@ -67,7 +67,7 @@ public class SortingComboBox extends Composite implements Field, KeyDownHandler,
     /**
      * Represents a suggestion in the suggestion popup box.
      */
-    public class SortingComboBoxSuggestion implements Suggestion, Command {
+    public class SortingComboBoxSuggestion<T> implements Suggestion, Command {
 
         private final String key;
         private final String caption;

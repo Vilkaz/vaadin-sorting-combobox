@@ -692,13 +692,13 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
     }
 
     @Override
-    protected SortingComboBoxState getState() {
-        return (SortingComboBoxState) super.getState();
+    protected SortingComboBoxState<T> getState() {
+        return (SortingComboBoxState<T>) super.getState();
     }
 
     @Override
-    protected SortingComboBoxState getState(boolean markAsDirty) {
-        return (SortingComboBoxState) super.getState(markAsDirty);
+    protected SortingComboBoxState<T> getState(boolean markAsDirty) {
+        return (SortingComboBoxState<T>) super.getState(markAsDirty);
     }
 
     @Override

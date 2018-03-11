@@ -24,7 +24,7 @@ import com.vaadin.shared.ui.AbstractSingleSelectState;
  *
  * @since 7.0
  */
-public class SortingComboBoxState extends AbstractSingleSelectState {
+public class SortingComboBoxState<T> extends AbstractSingleSelectState {
     {
         // TODO ideally this would be v-combobox, but that would affect a lot of
         // themes
