@@ -1,4 +1,3 @@
-package org.vaadin;
 /*
  * Copyright 2000-2016 Vaadin Ltd.
  *
@@ -15,6 +14,7 @@ package org.vaadin;
  * the License.
  */
 
+package org.vaadin;
 
 import com.vaadin.data.HasFilterableDataProvider;
 import com.vaadin.data.ValueProvider;
@@ -39,11 +39,14 @@ import org.vaadin.client.SortingComboBoxState;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 /**
- * A filtering dropdown single-select. Items are filtered based on user input.
- * Supports the creation of new items when a handler is set by the user.
+ * Extension of a classical ComboBox.
+ * Has the Possibility to get a List of BiPredicates,
+ * which will allow to sort the Results.
+ * That way You sort by any parameters of Item, not only filter it.
  *
  * @param <T>
  *            item (bean) type in SortingComboBox
@@ -53,6 +56,12 @@ import java.util.stream.Stream;
 public class SortingComboBox<T> extends AbstractSingleSelect<T>
         implements BlurNotifier,
         FocusNotifier, HasFilterableDataProvider<T, String> {
+
+    /**
+     * It is a List of exact Fits, that will be sorted to the top of the Suggestions.
+     * It is a list, so that you have the possibility to change to sorting order.
+     */
+    private List<BiPredicate<T, String>> exactFits = new ArrayList<>();
 
     /**
      * A callback method for fetching items. The callback is provided with a
@@ -163,7 +172,8 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
             currentFilterText = filterText;
             filterSlot.accept(filterText);
         }
-    };
+
+        };
 
     /**
      * Handler for new items entered by the user.

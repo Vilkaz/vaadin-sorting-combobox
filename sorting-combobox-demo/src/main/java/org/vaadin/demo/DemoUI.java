@@ -7,10 +7,11 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.vaadin.SortingComboBox;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 @Theme("demo")
 @Title("MyComponent Add-on Demo")
@@ -26,19 +27,26 @@ public class DemoUI extends UI
     @Override
     protected void init(VaadinRequest request) {
 
-        // Initialize our new UI component
-        final SortingComboBox<String> component = new SortingComboBox<>();
+        Collection<Item> items = createItems();
 
-        component.setItems("IT", "HAS", "TO", "FUCKING", "WORK", "NOW");
+        SortingComboBox<Item> regularComboBox = new SortingComboBox("Regular ComboBox");
+        regularComboBox.setItems(items);
+        regularComboBox.setItemCaptionGenerator(i -> i.getId() + ":" + i.getDescription());
 
-        // Show it in the middle of the screen
-        final VerticalLayout layout = new VerticalLayout();
-        layout.setStyleName("demoContentLayout");
-        layout.setSizeFull();
-        layout.setMargin(false);
-        layout.setSpacing(false);
-        layout.addComponent(component);
-        layout.setComponentAlignment(component, Alignment.MIDDLE_CENTER);
-        setContent(layout);
+
+        ComboBox<Item> sortedComboBox = new ComboBox("Sorting Combobox");
+        sortedComboBox.setItemCaptionGenerator(i -> i.getId() + ":" + i.getDescription());
+        sortedComboBox.setItems(items);
+
+        HorizontalLayout boxLayout = new HorizontalLayout(regularComboBox, sortedComboBox,  new Label("try entering values 11-14 in bouth boxes"));
+        setContent(boxLayout);
+    }
+
+    private Collection<Item> createItems() {
+        Item item1 = new Item(11L, "nivea(14131211)");
+        Item item2 = new Item(12L, "isana(13141211)");
+        Item item3 = new Item(13L,  "bebe(11121314)");
+        Item item4 = new Item(14L,  "olaz(11131214)");
+        return Arrays.asList(item1, item2, item3, item4);
     }
 }
