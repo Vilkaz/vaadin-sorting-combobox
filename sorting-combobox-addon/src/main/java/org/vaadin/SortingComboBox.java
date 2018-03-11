@@ -40,6 +40,7 @@ import org.vaadin.client.SortingComboBoxState;
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -831,7 +832,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      */
     public void setDataProvider(FetchItemsCallback<T> fetchItems,
                                 SerializableToIntFunction<String> sizeCallback) {
-        setDataProvider(new CallbackDataProvider<>(
+        setDataProvider(new SortingCallbackDataProvider<>(
                 q -> fetchItems.fetchItems(q.getFilter().orElse(""),
                         q.getOffset(), q.getLimit()),
                 q -> sizeCallback.applyAsInt(q.getFilter().orElse(""))));
@@ -861,5 +862,42 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
          */
         @Override
         public boolean test(String itemCaption, String filterText);
+    }
+
+    private class SortingCallbackDataProvider<I extends T, F> extends CallbackDataProvider<I, F> {
+
+        public SortingCallbackDataProvider(final FetchCallback<I, F> fetchCallback, final CountCallback<I, F> countCallback) {
+            super(fetchCallback, countCallback);
+        }
+
+        public SortingCallbackDataProvider(final FetchCallback<I, F> fetchCallBack, final CountCallback<I, F> countCallback, final ValueProvider<I, Object> identifierGetter) {
+            super(fetchCallBack, countCallback, identifierGetter);
+        }
+
+        @Override
+        public Stream<I> fetch(Query<I, F> query) {
+            final List<I> items = super.fetch(query).collect(Collectors.toList());
+
+
+            final I perfectFit = items.stream()
+                    .filter(i -> isItemExactFitting(i))
+                    .findAny()
+                    .orElse(null);
+
+            if (perfectFit != null) {
+                items.remove(perfectFit);
+                List<I> sorted = new ArrayList<>();
+                sorted.add(perfectFit);
+                sorted.addAll(items);
+                return sorted.stream();
+            }
+            return items.stream();
+        }
+
+    }
+
+    private boolean isItemExactFitting(final T i) {
+        return exactFits.stream()
+                .anyMatch(fit -> fit.test(i, currentFilterText));
     }
 }

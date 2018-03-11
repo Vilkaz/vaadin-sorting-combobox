@@ -2909,6 +2909,11 @@ public class SortingComboBox<T> extends Composite implements Field, KeyDownHandl
             setText(emptySelectionCaption);
         }
     }
+    
+    public void filterForExactFit() {
+        final String filterText = tb.getValue();
+
+    }
 
     private static Logger getLogger() {
         return Logger.getLogger(SortingComboBox.class.getName());
