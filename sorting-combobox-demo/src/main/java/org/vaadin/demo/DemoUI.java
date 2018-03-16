@@ -12,6 +12,7 @@ import org.vaadin.SortingComboBox;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.function.BiPredicate;
 
 @Theme("demo")
 @Title("MyComponent Add-on Demo")
@@ -29,14 +30,15 @@ public class DemoUI extends UI
 
         Collection<Item> items = createItems();
 
-        SortingComboBox<Item> regularComboBox = new SortingComboBox("Regular ComboBox");
+        ComboBox<Item> regularComboBox = new ComboBox("Regular ComboBox");
         regularComboBox.setItems(items);
         regularComboBox.setItemCaptionGenerator(i -> i.getId() + ":" + i.getDescription());
 
 
-        ComboBox<Item> sortedComboBox = new ComboBox("Sorting Combobox");
+        SortingComboBox<Item> sortedComboBox = new SortingComboBox("Sorting Combobox");
         sortedComboBox.setItemCaptionGenerator(i -> i.getId() + ":" + i.getDescription());
         sortedComboBox.setItems(items);
+        sortedComboBox.addExactFit((item, string) ->  string.equals(String.valueOf(item.getId())));
 
         HorizontalLayout boxLayout = new HorizontalLayout(regularComboBox, sortedComboBox,  new Label("try entering values 11-14 in bouth boxes"));
         setContent(boxLayout);
@@ -49,4 +51,6 @@ public class DemoUI extends UI
         Item item4 = new Item(14L,  "olaz(11131214)");
         return Arrays.asList(item1, item2, item3, item4);
     }
+
+
 }

@@ -58,11 +58,14 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
         implements BlurNotifier,
         FocusNotifier, HasFilterableDataProvider<T, String> {
 
+//    private T type = T;
+
     /**
      * It is a List of exact Fits, that will be sorted to the top of the Suggestions.
      * It is a list, so that you have the possibility to change to sorting order.
      */
     private List<BiPredicate<T, String>> exactFits = new ArrayList<>();
+    private Collection<T> items;
 
     /**
      * A callback method for fetching items. The callback is provided with a
@@ -172,9 +175,12 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
         public void setFilter(String filterText) {
             currentFilterText = filterText;
             filterSlot.accept(filterText);
+            setDataProvider(new SortingDataProvider<T>(filterText,
+                    items, exactFits.get(0)));
         }
 
-        };
+
+    };
 
     /**
      * Handler for new items entered by the user.
@@ -276,6 +282,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      */
     @Override
     public void setItems(Collection<T> items) {
+        this.items = items;
         ListDataProvider<T> listDataProvider = DataProvider.ofCollection(items);
 
         setDataProvider(listDataProvider);
@@ -899,5 +906,13 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
     private boolean isItemExactFitting(final T i) {
         return exactFits.stream()
                 .anyMatch(fit -> fit.test(i, currentFilterText));
+    }
+
+    public void updateSorting(final String filterText) {
+        System.out.println("updating to " + filterText);
+    }
+
+    public void addExactFit(BiPredicate<T, String> fit) {
+        exactFits.add(fit);
     }
 }

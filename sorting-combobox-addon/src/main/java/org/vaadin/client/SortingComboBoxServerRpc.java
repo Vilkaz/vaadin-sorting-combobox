@@ -40,4 +40,5 @@ public interface SortingComboBoxServerRpc extends ServerRpc {
      *            mode
      */
     public void setFilter(String filter);
+
 }
