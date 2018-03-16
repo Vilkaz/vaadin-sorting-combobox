@@ -176,7 +176,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
             currentFilterText = filterText;
             filterSlot.accept(filterText);
             setDataProvider(new SortingDataProvider<T>(filterText,
-                    items, exactFits.get(0)));
+                    items, exactFits));
         }
 
 
@@ -906,10 +906,6 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
     private boolean isItemExactFitting(final T i) {
         return exactFits.stream()
                 .anyMatch(fit -> fit.test(i, currentFilterText));
-    }
-
-    public void updateSorting(final String filterText) {
-        System.out.println("updating to " + filterText);
     }
 
     public void addExactFit(BiPredicate<T, String> fit) {
