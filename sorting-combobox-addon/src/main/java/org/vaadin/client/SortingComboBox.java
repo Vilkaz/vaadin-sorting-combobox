@@ -60,7 +60,7 @@ import java.util.logging.Logger;
  *
  * @since 8.0
  */
-public class SortingComboBox<T> extends Composite implements Field, KeyDownHandler,
+public class SortingComboBox extends Composite implements Field, KeyDownHandler,
         KeyUpHandler, ClickHandler, FocusHandler, BlurHandler, Focusable,
         SubPartAware, HandlesAriaCaption, HandlesAriaInvalid,
         HandlesAriaRequired, DeferredWorker, MouseDownHandler {
@@ -68,7 +68,7 @@ public class SortingComboBox<T> extends Composite implements Field, KeyDownHandl
     /**
      * Represents a suggestion in the suggestion popup box.
      */
-    public class SortingComboBoxSuggestion<T> implements Suggestion, Command {
+    public class SortingComboBoxSuggestion implements Suggestion, Command {
 
         private final String key;
         private final String caption;
@@ -1727,12 +1727,6 @@ public class SortingComboBox<T> extends Composite implements Field, KeyDownHandl
     private final DataReceivedHandler dataReceivedHandler = new DataReceivedHandler();
 
     /**
-     * It is a List of exact Fits, that will be sorted to the top of the Suggestions.
-     * It is a list, so that you have the possibility to change to sorting order.
-     */
-    private List<BiPredicate<T, String>> exactFits;
-
-    /**
      * Default constructor.
      */
     public SortingComboBox() {
@@ -1762,9 +1756,6 @@ public class SortingComboBox<T> extends Composite implements Field, KeyDownHandl
         sinkEvents(Event.ONPASTE);
     }
 
-    public void setExactFits(final List<BiPredicate<T, String>> exactFits) {
-        this.exactFits = exactFits;
-    }
 
     private static double getMarginBorderPaddingWidth(Element element) {
         final ComputedStyle s = new ComputedStyle(element);

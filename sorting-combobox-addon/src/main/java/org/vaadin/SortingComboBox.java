@@ -297,7 +297,8 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
     @Override
     public void setItems(Stream<T> streamOfItems) {
         // Overridden only to add clarification to javadocs
-        super.setItems(streamOfItems);
+        this.items = streamOfItems.collect(Collectors.toList());
+        super.setItems(items.stream());
     }
 
     /**
@@ -309,6 +310,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
     @Override
     public void setItems(T... items) {
         // Overridden only to add clarification to javadocs
+        setVarArgsIToItems(items);
         super.setItems(items);
     }
 
@@ -326,6 +328,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      *            the list data provider to use, not <code>null</code>
      * @since 8.0
      */
+    // Sorting ComboBox overwrites  DataProvider, just use setItems
     public void setDataProvider(ListDataProvider<T> listDataProvider) {
         // Cannot use the case insensitive contains shorthand from
         // ListDataProvider since it wouldn't react to locale changes
@@ -351,6 +354,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      * @since 8.0
      */
     public void setItems(CaptionFilter captionFilter, Collection<T> items) {
+        this.items = items;
         ListDataProvider<T> listDataProvider = DataProvider.ofCollection(items);
 
         setDataProvider(captionFilter, listDataProvider);
@@ -368,6 +372,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      *            the list data provider to use, not <code>null</code>
      * @since 8.0
      */
+    // Sorting ComboBox overwrites  DataProvider, just use set Items
     public void setDataProvider(CaptionFilter captionFilter,
                                 ListDataProvider<T> listDataProvider) {
         Objects.requireNonNull(listDataProvider,
@@ -395,7 +400,12 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      */
     public void setItems(CaptionFilter captionFilter,
                          @SuppressWarnings("unchecked") T... items) {
+        setVarArgsIToItems(items);
         setItems(captionFilter, Arrays.asList(items));
+    }
+
+    private void setVarArgsIToItems(final T[] items) {
+        this.items =  Arrays.stream(items).collect(Collectors.toList());
     }
 
     /**
@@ -700,13 +710,13 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
     }
 
     @Override
-    protected SortingComboBoxState<T> getState() {
-        return (SortingComboBoxState<T>) super.getState();
+    protected SortingComboBoxState getState() {
+        return (SortingComboBoxState) super.getState();
     }
 
     @Override
-    protected SortingComboBoxState<T> getState(boolean markAsDirty) {
-        return (SortingComboBoxState<T>) super.getState(markAsDirty);
+    protected SortingComboBoxState getState(boolean markAsDirty) {
+        return (SortingComboBoxState) super.getState(markAsDirty);
     }
 
     @Override
@@ -822,6 +832,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
                 .accept(convertOrNull.apply(filter));
     }
 
+
     /**
      * Sets a CallbackDataProvider using the given fetch items callback and a
      * size callback.
@@ -837,6 +848,7 @@ public class SortingComboBox<T> extends AbstractSingleSelect<T>
      * @see CallbackDataProvider
      * @see #setDataProvider(DataProvider)
      */
+    // Sorting ComboBox overwrites  DataProvider, just use set Items
     public void setDataProvider(FetchItemsCallback<T> fetchItems,
                                 SerializableToIntFunction<String> sizeCallback) {
         setDataProvider(new SortingCallbackDataProvider<>(

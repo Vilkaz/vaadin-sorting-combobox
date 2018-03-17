@@ -40,7 +40,7 @@ public class DemoUI extends UI
         sortedComboBox.setItems(items);
         sortedComboBox.addExactFit((item, string) ->  string.equals(String.valueOf(item.getId())));
 
-        HorizontalLayout boxLayout = new HorizontalLayout(regularComboBox, sortedComboBox,  new Label("try entering values 11-14 in bouth boxes"));
+        HorizontalLayout boxLayout = new HorizontalLayout(regularComboBox, sortedComboBox, new Label("try entering values 11-14 in bouth boxes"));
         setContent(boxLayout);
     }
 

@@ -28,7 +28,7 @@ import java.util.function.BiPredicate;
  *
  * @since 7.0
  */
-public class SortingComboBoxState<T> extends AbstractSingleSelectState {
+public class SortingComboBoxState extends AbstractSingleSelectState {
     {
         // TODO ideally this would be v-combobox, but that would affect a lot of
         // themes
@@ -103,8 +103,5 @@ public class SortingComboBoxState<T> extends AbstractSingleSelectState {
      * @since 8.0
      */
     public String selectedItemIcon;
-
-    @DelegateToWidget
-    public List<BiPredicate<T, String>> exactFits;
 
 }
